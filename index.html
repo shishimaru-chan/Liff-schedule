@@ -245,12 +245,21 @@
   <textarea rows="3" placeholder="メモを入力（100文字以内）"></textarea>
 
   <!-- 登録 -->
-  <button class="submit">登録する</button>
+  <button class="submit" id="submitBtn">登録する</button>
 
   <script>
-  // ▼▼▼ ここにGASのURLを貼る ▼▼▼
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbzh5lOpuCs5D5SzRBXx7aOo2ymIf89sY_8HC-Rh_hkQTqOXsk8m_8lVlZR8mF9xGJl62A/exec";
-</script>
+    // ▼▼▼ ここにGASのURLを貼る ▼▼▼
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbzh5lOpuCs5D5SzRBXx7aOo2ymIf89sY_8HC-Rh_hkQTqOXsk8m_8lVlZR8mF9xGJl62A/exec";
+  </script>
+  <script>
+    const submitBtn = document.getElementById("submitBtn");
+
+    submitBtn.addEventListener("click", () => {
+      console.log("登録ボタンが押されました！");
+      alert("ボタン反応OK 👍");
+    });
+  </script>
+
 
 
 </body>
