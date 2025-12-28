@@ -99,17 +99,16 @@
 
   <script>
     // ▼▼▼ GASのURL（GET用） ▼▼▼
-    const GAS_URL = "https://script.google.com/macros/s/あなたのURL/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbzh5lOpuCs5D5SzRBXx7aOo2ymIf89sY_8HC-Rh_hkQTqOXsk8m_8lVlZR8mF9xGJl62A/exec";
 
     let schedules = [];   // ← 全予定を入れる
+    let scheduleMap = {};
     let currentDate = new Date();
 
     const monthLabel = document.getElementById("currentMonth");
     const calendarDays = document.getElementById("calendarDays");
 
     // ① GASから予定を取得
-    let schedules = [];
-    let scheduleMap = {};
 
     fetch(GAS_URL)
         .then(res => res.json())
@@ -168,7 +167,10 @@
          const dateEl = document.createElement("div");
          dateEl.textContent = day;
 
-         const dateKey = `${year}-${month + 1}-${day}`;
+         const mm = String(month + 1).padStart(2, "0");
+         const dd = String(day).padStart(2, "0");
+         const dateKey = `${year}-${mm}-${dd}`;
+
 
          // ★ この日付に予定があるか？
          if (scheduleMap[dateKey]) {
