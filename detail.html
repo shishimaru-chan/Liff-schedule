@@ -108,19 +108,46 @@
     const calendarDays = document.getElementById("calendarDays");
 
     // ① GASから予定を取得
-    fetch(GAS_URL)
-      .then(res => res.json())
-      .then(data => {
-        schedules = data;
-        console.log("取得した予定👇", schedules);
-        renderCalendar();
-      })
-      .catch(err => {
-        console.error("取得エラー😢", err);
-      });
+    let schedules = [];
+    let scheduleMap = {};
 
-    // ② カレンダー描画
-    function renderCalendar() {
+    fetch(GAS_URL)
+        .then(res => res.json())
+        .then(data => {
+         schedules = data;
+         scheduleMap = groupSchedulesByDate(data);
+
+         console.log("予定一覧", schedules);
+         console.log("日付マップ", scheduleMap);
+
+         renderCalendar();
+        })
+        .catch(err => {
+          console.error("取得エラー😢", err);
+        }); 
+
+      // 日付ごとに予定をまとめる
+     function groupSchedulesByDate(data) {
+         const map = {};
+
+          data.forEach(item => {
+            if (!map[item.date]) {
+                 map[item.date] = [];
+                }
+                map[item.date].push(item.owner);
+            });
+  
+           return map;
+        }
+
+      // owner → マーク対応表
+      const OWNER_MARK = {
+         me: "🧀",
+         both: "🐾"
+        };
+      
+      // ② カレンダー描画
+      function renderCalendar() {
       calendarDays.innerHTML = "";
 
       const year = currentDate.getFullYear();
@@ -138,22 +165,37 @@
 
       // 日付
       for (let day = 1; day <= lastDate; day++) {
-        const dateEl = document.createElement("div");
-        dateEl.textContent = day;
+         const dateEl = document.createElement("div");
+         dateEl.textContent = day;
 
-        dateEl.addEventListener("click", () => {
-          document
-            .querySelectorAll(".dates div")
-            .forEach(el => el.classList.remove("selected"));
+         const dateKey = `${year}-${month + 1}-${day}`;
 
-          dateEl.classList.add("selected");
+         // ★ この日付に予定があるか？
+         if (scheduleMap[dateKey]) {
+             const markEl = document.createElement("div");
+             markEl.className = "mark";
 
-          const dateStr = `${year}-${month + 1}-${day}`;
-          console.log("選択した日付:", dateStr);
-        });
+              // 重複しないように unique 化
+              const owners = [...new Set(scheduleMap[dateKey])];
 
-        calendarDays.appendChild(dateEl);
-      }
+              markEl.textContent = owners
+                .map(owner => OWNER_MARK[owner] || "")
+                .join("");
+
+              dateEl.appendChild(markEl);
+            }
+
+         dateEl.addEventListener("click", () => {
+             document
+              .querySelectorAll(".dates div")
+              .forEach(el => el.classList.remove("selected"));
+
+             dateEl.classList.add("selected");
+
+             console.log("選択した日付:", dateKey);
+            });
+           calendarDays.appendChild(dateEl);
+        }
     }
 
     document.getElementById("prevMonth").addEventListener("click", () => {
