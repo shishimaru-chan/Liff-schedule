@@ -248,10 +248,68 @@
   </script>
   <script>
     const submitBtn = document.getElementById("submitBtn");
+  
+    submitBtn.addEventListener("click", async () => {
+  
+      // ① 日付チェック
+      if (!selectedDate) {
+        alert("日付を選んでね");
+        return;
+      }
 
-    submitBtn.addEventListener("click", () => {
-      console.log("登録ボタンが押されました！");
-      alert("ボタン反応OK 👍");
+      // ② 予定の種類
+      const owner = document.querySelector(
+        'input[name="scheduleType"]:checked'
+      ).value;
+
+      // ③ 時間（selected のものを取得）
+      const time = Array.from(
+        document.querySelectorAll(".time-group .btn.selected")
+      ).map(btn => btn.textContent).join(",");
+
+      // ④ カテゴリ
+      const category = document.querySelector(
+      ".category-group .btn.selected"
+      )?.textContent || "";
+
+      // ⑤ メモ
+      const memo = document.querySelector("textarea").value;
+
+      // ⑥ GASに送るデータ
+      const payload = {
+        date: selectedDate,
+        owner: owner,
+        time: time,
+        category: category,
+        memo: memo
+      };
+
+      console.log("送信データ", payload);
+
+      // ⑦ GASへPOST
+      try {
+        const res = await fetch(GAS_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+
+        if (result.result === "ok") {
+          alert("登録できたよ 🎉");
+          // liff.closeWindow(); ← LIFF組み込み後にON
+        } else {
+          alert("登録失敗 😢");
+          console.error(result);
+        }
+
+      } catch (err) {
+        alert("通信エラー 😢");
+        console.error(err);
+      }
     });
   </script>
 
