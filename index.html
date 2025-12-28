@@ -216,7 +216,7 @@
 
   <!-- 時間 -->
   <h2>時間</h2>
-  <div class="button-group">
+  <div class="button-group time-group">
     <div class="btn">朝</div>
     <div class="btn selected">昼</div>
     <div class="btn">夕</div>
@@ -226,7 +226,7 @@
 
   <!-- カテゴリ -->
   <h2>カテゴリ</h2>
-  <div class="button-group">
+  <div class="button-group category-group">
     <div class="btn selected">友達</div>
     <div class="btn">Create</div>
     <div class="btn">Mainte</div>
@@ -314,31 +314,16 @@
 
   </script>
   <script>
-    // ▼ 時間・カテゴリ共通：ボタンON/OFF
-    document.querySelectorAll(".button-group").forEach(group => {
-      const buttons = group.querySelectorAll(".btn");
-
-      buttons.forEach(btn => {
-        btn.addEventListener("click", () => {
-          // 一旦すべて解除
-          buttons.forEach(b => b.classList.remove("selected"));
-          // 押したものだけON
-          btn.classList.add("selected");
-        });
-      });
-    });
-  </script>
-  <script>
-    const timeButtons = document.querySelectorAll("h2 + .button-group .btn");
+    const timeButtons = document.querySelectorAll(".time-group .btn");
 
     timeButtons.forEach(btn => {
       btn.addEventListener("click", () => {
         if (btn.textContent === "1日") {
-          // 全解除 → 1日だけON
+          // 1日を選んだら他を解除
           timeButtons.forEach(b => b.classList.remove("selected"));
           btn.classList.add("selected");
         } else {
-          // 1日が選ばれてたら解除
+          // 朝〜夜を選んだら「1日」を解除
           timeButtons.forEach(b => {
             if (b.textContent === "1日") b.classList.remove("selected");
           });
@@ -347,6 +332,17 @@
       });
     });
   </script>
+  <script>
+    const categoryButtons = document.querySelectorAll(".category-group .btn");
+
+    categoryButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        categoryButtons.forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+      });
+    });
+  </script>
+
 
 </body>
 </html>
