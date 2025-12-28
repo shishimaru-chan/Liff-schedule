@@ -246,6 +246,7 @@
     // ▼▼▼ ここにGASのURLを貼る ▼▼▼
     const GAS_URL = "https://script.google.com/macros/s/AKfycbzh5lOpuCs5D5SzRBXx7aOo2ymIf89sY_8HC-Rh_hkQTqOXsk8m_8lVlZR8mF9xGJl62A/exec";
   </script>
+
   <script>
     const submitBtn = document.getElementById("submitBtn");
   
@@ -300,6 +301,10 @@
 
         if (result.result === "ok") {
           alert("登録できたよ 🎉");
+          setTimeout(() => {
+           liff.closeWindow();
+          }, 300);
+
           // liff.closeWindow(); ← LIFF組み込み後にON
         } else {
           alert("登録失敗 😢");
@@ -371,6 +376,7 @@
     });
 
   </script>
+
   <script>
     const timeButtons = document.querySelectorAll(".time-group .btn");
 
@@ -390,6 +396,7 @@
       });
     });
   </script>
+
   <script>
     const categoryButtons = document.querySelectorAll(".category-group .btn");
 
@@ -398,6 +405,19 @@
         categoryButtons.forEach(b => b.classList.remove("selected"));
         btn.classList.add("selected");
       });
+    });
+  </script>
+
+  <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbx9yDBLBpXoKMhLnw_mriDpD202szYyczSXOoVEhsNEq_l97DGrU6bvpaxd8CGE_COwIA/exec";
+
+    fetch(GAS_URL)
+    .then(res => res.json())
+    .then(data => {
+      console.log("取得した予定データ👇", data);
+    })
+    .catch(err => {
+      console.error("取得エラー😢", err);
     });
   </script>
 
