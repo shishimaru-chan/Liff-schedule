@@ -313,6 +313,40 @@
     });
 
   </script>
+  <script>
+    // ▼ 時間・カテゴリ共通：ボタンON/OFF
+    document.querySelectorAll(".button-group").forEach(group => {
+      const buttons = group.querySelectorAll(".btn");
+
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          // 一旦すべて解除
+          buttons.forEach(b => b.classList.remove("selected"));
+          // 押したものだけON
+          btn.classList.add("selected");
+        });
+      });
+    });
+  </script>
+  <script>
+    const timeButtons = document.querySelectorAll("h2 + .button-group .btn");
+
+    timeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (btn.textContent === "1日") {
+          // 全解除 → 1日だけON
+          timeButtons.forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+        } else {
+          // 1日が選ばれてたら解除
+          timeButtons.forEach(b => {
+            if (b.textContent === "1日") b.classList.remove("selected");
+          });
+          btn.classList.toggle("selected");
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
