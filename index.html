@@ -291,9 +291,7 @@
       try {
         const res = await fetch(GAS_URL, {
           method: "POST",
-          headers: {
-            "Content-Type": "text/plain"
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
 
@@ -405,19 +403,6 @@
         categoryButtons.forEach(b => b.classList.remove("selected"));
         btn.classList.add("selected");
       });
-    });
-  </script>
-
-  <script>
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbwSh3EGShi5D6nkk13u9CXhwwNCCm70N7ae4o_pTAAbTHqFKZOyE-YHllgh06yv8yeH5A/exec";
-
-    fetch(GAS_URL)
-    .then(res => res.json())
-    .then(data => {
-      console.log("取得した予定データ👇", data);
-    })
-    .catch(err => {
-      console.error("取得エラー😢", err);
     });
   </script>
 
