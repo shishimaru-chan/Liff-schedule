@@ -246,7 +246,7 @@
 
   <script>
     // ▼▼▼ ここにGASのURLを貼る ▼▼▼
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbx5kv9L31r2z2k3tBEI9GHgDvUvIyY-mTwcaw--DUhnm4GB6Oj1BRY86zUT3qZBe-YBNA/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxxBytl1C5bqEbwQqEMSwid2h2KTfhiHPjC5gzbrAbBnOeUIu1IWiSqXo0-k8zL5d95NA/exec";
     window.addEventListener("DOMContentLoaded", async () => {
      await liff.init({
       liffId: "2008794909-gcaJmGXJ"
@@ -301,9 +301,6 @@
       try {
         const res = await fetch(GAS_URL, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
           body: JSON.stringify(payload)
         });
 
