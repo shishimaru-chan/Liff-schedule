@@ -246,10 +246,14 @@
 
   <script>
     // ▼▼▼ ここにGASのURLを貼る ▼▼▼
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbwn4lWthv6kIxvlc7TOUrFJx9YffSWAkfpPyt1qaQWDCTRS4wkCEMIIZNVQ8wTgWCreZw/exec";
-    liff.init({
-     liffId: "2008794909-gcaJmGXJ"
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxsFYaOvEnG2TPPMqiNCxCLOQ6nVReX6Pa2TqW8OqqLfgXaU-2s9GK2oh1SlGrNs3G_4Q/exec";
+    window.addEventListener("DOMContentLoaded", async () => {
+     await liff.init({
+      liffId: "2008794909-gcaJmGXJ"
     });
+
+  console.log("LIFF起動OK:", liff.isInClient());
+});
     
   </script>
 
