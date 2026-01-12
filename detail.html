@@ -136,6 +136,26 @@
         .catch(err => {
           console.error("取得エラー😢", err);
         }); 
+      
+      function showSchedules(dateKey) {
+        const listEl = document.getElementById("scheduleList");
+
+        // 予定がない日
+        if (!scheduleMap[dateKey]) {
+          listEl.innerHTML = "この日の予定はありません";
+          return;
+        }
+
+        // 予定がある日
+        const owners = scheduleMap[dateKey];
+
+        listEl.innerHTML = owners.map(owner => {
+          if (owner === "me") return "🧀 自分の予定";
+          if (owner === "both") return "🐾 2人の予定";
+          return "";
+        }).join("<br>");
+      }  
+        
 
       // 日付ごとに予定をまとめる
      function groupSchedulesByDate(data) {
@@ -207,6 +227,9 @@
              dateEl.classList.add("selected");
 
              console.log("選択した日付:", dateKey);
+
+             showSchedules(dateKey);
+             
             });
            calendarDays.appendChild(dateEl);
         }
