@@ -76,6 +76,52 @@
       transform: translateX(-50%);
       font-size: 12px;
     }
+
+    .schedule-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #eee;
+    }
+
+    .schedule-owner {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .tag {
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #EFE7D3;
+    }
+
+    .memo {
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .actions button {
+      border: none;
+      background: none;
+      color: #1A0089;
+      cursor: pointer;
+    }
+
   </style>
 </head>
 
@@ -140,21 +186,42 @@
       function showSchedules(dateKey) {
         const listEl = document.getElementById("scheduleList");
 
-        // 予定がない日
         if (!scheduleMap[dateKey]) {
           listEl.innerHTML = "この日の予定はありません";
           return;
         }
 
-        // 予定がある日
-        const owners = scheduleMap[dateKey];
+        listEl.innerHTML = scheduleMap[dateKey]
+          .map((item, index) => {
+            const ownerText =
+              item.owner === "me" ? "🧀 舞" :
+              item.owner === "both" ? "🐾 2人" : "";
 
-        listEl.innerHTML = owners.map(owner => {
-          if (owner === "me") return "🧀 自分の予定";
-          if (owner === "both") return "🐾 2人の予定";
-          return "";
-        }).join("<br>");
-      }  
+            // 時間はカンマ区切りなので配列にする
+            const times = item.time.split(",");
+
+            return `
+              <div class="schedule-card">
+                <div class="schedule-owner">${ownerText}</div>
+
+                <div class="tags">
+                  ${times.map(t => `<span class="tag">${t}</span>`).join("")}
+                  <span class="tag">${item.category}</span>
+                </div>
+    
+                <div class="memo">
+                  ${item.memo || ""}
+                </div>
+
+                <div class="actions">
+                  <button onclick="alert('編集は次！')">編集</button>
+                  <button onclick="alert('削除は次！')">削除</button>
+                </div>
+              </div>
+            `;
+          })
+          .join("");
+        }  
         
 
       // 日付ごとに予定をまとめる
@@ -229,7 +296,7 @@
              console.log("選択した日付:", dateKey);
 
              showSchedules(dateKey);
-             
+
             });
            calendarDays.appendChild(dateEl);
         }
