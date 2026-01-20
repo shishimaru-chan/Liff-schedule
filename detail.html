@@ -206,11 +206,13 @@
 
                 <div class="tags">
                   ${times.map(t => `<span class="tag">${t}</span>`).join("")}
-                  <span class="tag">${item.category}</span>
+                  ${item.category ? `<span class="tag">${item.category}</span>` : ""}
                 </div>
     
                 <div class="memo">
-                  ${item.memo || ""}
+                  ${item.memo && item.memo.trim() !== ""
+                  ? item.memo
+                  : "（メモなし）"}
                 </div>
 
                 <div class="actions">
