@@ -92,6 +92,18 @@
       margin-bottom: 6px;
     }
 
+    .schedule-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .schedule-line .memo {
+      font-size: 14px;
+    }
+
+
     .tags {
       display: flex;
       gap: 6px;
@@ -119,8 +131,8 @@
 
     .actions button {
       border: none;
-      background: none;
-      color: #1A0089;
+      background: #1A0089;
+      color: #EFE7D3;
       cursor: pointer;
     }
 
@@ -206,19 +218,21 @@
               <div class="schedule-card">
                 <div class="schedule-owner">${ownerText}</div>
 
-                <div class="tags">
-                  ${times.map(t => `<span class="tag">${t}</span>`).join("")}
-                  ${item.category ? `<span class="tag">${item.category}</span>` : ""}
-                </div>
+                <div class="schedule-line">
+                 <div class="tags">
+                   ${times.map(t => `<span class="tag">${t}</span>`).join("")}
+                   ${item.category ? `<span class="tag">${item.category}</span>` : ""}
+                 </div>
     
-                <div class="memo">
-                  ${item.memo ? item.memo : "（メモなし）"}
-                </div>
+                 <div class="memo">
+                   ${item.memo ? item.memo : "（メモなし）"}
+                 </div>
 
-                <div class="actions">
-                  <button onclick="alert('編集は次！')">編集</button>
-                  <button onclick="alert('削除は次！')">削除</button>
-                </div>
+                 <div class="actions">
+                   <button onclick="alert('編集は次！')">編集</button>
+                   <button onclick="alert('削除は次！')">削除</button>
+                 </div>
+               </div>
               </div>
             `;
           })
