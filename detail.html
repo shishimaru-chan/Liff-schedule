@@ -277,7 +277,11 @@
              markEl.className = "mark";
 
               // 重複しないように unique 化
-              const owners = [...new Set(scheduleMap[dateKey])];
+              const owners = [
+               ...new Set(
+                  scheduleMap[dateKey].map(item => item.owner)
+                )
+              ];
 
               markEl.textContent = owners
                 .map(owner => OWNER_MARK[owner] || "")
