@@ -359,6 +359,12 @@
     const monthLabel = document.getElementById("currentMonth");
     const calendarDays = document.getElementById("calendarDays");
 
+    const hasScheduleDates = [
+      "2025-02-03",
+      "2025-02-10",
+      "2025-02-22"
+    ];
+
     function renderCalendar() {
       calendarDays.innerHTML = "";
 
@@ -380,6 +386,16 @@
       for (let day = 1; day <= lastDate; day++) {
         const dateEl = document.createElement("div");
         dateEl.textContent = day;
+
+        const dateStr = `${year}-${String(month + 1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+
+        if (hasScheduleDates.includes(dateStr)) {
+          const mark = document.createElement("div");
+          mark.textContent = "🐾"; // ← 好きな絵文字
+          mark.classList.add("mark");
+          dateEl.appendChild(mark);
+        }
+
 
         const dayOfWeek = new Date(year, month, day).getDay();
 
