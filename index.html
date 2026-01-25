@@ -87,9 +87,9 @@
      cursor: pointer;
     }
 
-   .dates div:hover {
+   /*.dates div:hover {
      background: rgba(0,0,0,0.04);
-    }
+    }*/
 
    .dates .selected {
      background: var(--orange);
@@ -108,6 +108,17 @@
      transform: translateX(-50%);
      font-size: 12px;
     }
+
+    /* 日曜 */
+    .sunday {
+      color: #E5533D; /* 赤っぽい */
+    }
+
+    /* 土曜 */
+    .saturday {
+      color: #3A6FD8; /* 青っぽい */
+    }
+
 
    /* =========================
       ラジオ（予定の種類）
@@ -143,9 +154,9 @@
      transition: all 0.15s ease;
     }
 
-   .btn:hover {
+   /*.btn:hover {
      background: rgba(0,0,0,0.04);
-    }
+    }*/
 
    .btn.selected {
      background: var(--green);
@@ -369,6 +380,15 @@
       for (let day = 1; day <= lastDate; day++) {
         const dateEl = document.createElement("div");
         dateEl.textContent = day;
+
+        const dayOfWeek = new Date(year, month, day).getDay();
+
+        if (dayOfWeek === 0) {
+          dateEl.classList.add("sunday");
+        } else if (dayOfWeek === 6) {
+          dateEl.classList.add("saturday");
+        }
+
 
         dateEl.addEventListener("click", () => {
           document
