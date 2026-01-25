@@ -252,8 +252,11 @@
       liffId: "2008794909-gcaJmGXJ"
     });
 
-  console.log("LIFF起動OK:", liff.isInClient());
-});
+    myProfile = await liff.getProfile();
+      
+    console.log("LIFF起動OK:", liff.isInClient());
+    console.log("自分のUSER_ID:", myProfile.userId);
+    });
     
   </script>
 
