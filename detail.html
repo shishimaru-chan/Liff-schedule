@@ -208,7 +208,8 @@
         listEl.innerHTML = scheduleMap[dateKey]
           .map((item, index) => {
             const ownerText =
-              item.owner === "me" ? "🧀 舞" :
+              item.owner === "mai" ? "🧀 舞" :
+              item.owner === "takuya" ? "🍆 拓哉" :
               item.owner === "both" ? "🐾 2人" : "";
 
             // 時間はカンマ区切りなので配列にする
