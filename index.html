@@ -4,422 +4,246 @@
   <meta charset="UTF-8" />
   <title>予定登録</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css">
+
+  <!-- LIFF SDK（※必須） -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <!-- フォント -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
-   /* =========================
-      基本設定
-   ========================= */
-   :root {
-     --dark-blue: #1A0089;
-     --orange: #FF5E33;
-     --cream: #EFE7D3;
-     --green: #B7CF4F;
-     --gray: #999;
+    :root {
+      --dark-blue: #1A0089;
+      --orange: #FF5E33;
+      --cream: #EFE7D3;
+      --green: #B7CF4F;
+      --gray: #999;
     }
 
-   * {
-     box-sizing: border-box;
+    body {
+      margin: 0;
+      padding: 16px;
+      background: var(--cream);
+      font-family: -apple-system, BlinkMacSystemFont,
+        "Helvetica Neue", "Segoe UI", sans-serif;
+      color: var(--dark-blue);
     }
 
-   body {
-     margin: 0;
-     padding: 16px;
-     background: var(--cream);
-     font-family: -apple-system, BlinkMacSystemFont,
-       "Helvetica Neue", "Segoe UI", sans-serif;
-     color: var(--dark-blue);
+    h2 {
+      font-size: 14px;
+      margin: 24px 0 8px;
     }
 
-   /* =========================
-      見出し
-   ========================= */
-   h2 {
-     font-size: 14px;
-     font-weight: 600;
-     margin: 24px 0 8px;
+    .calendar {
+      background: #fff;
+      border-radius: 18px;
+      padding: 14px;
     }
 
-   /* =========================
-      カレンダー
-   ========================= */
-   .calendar {
-     background: #fff;
-     border-radius: 18px;
-     padding: 14px;
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      margin-bottom: 10px;
     }
 
-   .calendar-header {
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     font-weight: 600;
-     font-size: 14px;
-     margin-bottom: 10px;
+    .weekdays,
+    .dates {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
     }
 
-   .calendar-header span {
-     cursor: pointer;
-     user-select: none;
+    .weekdays div {
+      font-size: 11px;
+      color: var(--gray);
     }
 
-   .weekdays,
-   .dates {
-     display: grid;
-     grid-template-columns: repeat(7, 1fr);
-     text-align: center;
+    .dates div {
+      padding: 8px 0;
+      border-radius: 10px;
+      cursor: pointer;
     }
 
-   .weekdays div {
-     font-size: 11px;
-     color: var(--gray);
-     margin-bottom: 4px;
+    .dates .selected {
+      background: var(--orange);
+      color: #fff;
     }
 
-   .dates div {
-     position: relative;
-     padding: 8px 0;
-     border-radius: 10px;
-     font-size: 14px;
-     cursor: pointer;
+    .button-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-   .dates div:hover {
-     background: rgba(0,0,0,0.04);
+    .btn {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--dark-blue);
+      background: #fff;
+      cursor: pointer;
     }
 
-   .dates .selected {
-     background: var(--orange);
-     color: #fff;
+    .btn.selected {
+      background: var(--green);
+      border-color: var(--green);
     }
 
-   .dates .today {
-     border: 1.5px solid var(--green);
+    textarea {
+      width: 100%;
+      border-radius: 14px;
+      border: none;
+      padding: 12px;
     }
 
-   /* マーク用（後でJSから追加される想定） */
-   .dates .mark {
-     position: absolute;
-     bottom: 2px;
-     left: 50%;
-     transform: translateX(-50%);
-     font-size: 12px;
-    }
-
-   /* =========================
-      ラジオ（予定の種類）
-   ========================= */
-   .radio-group {
-     display: flex;
-     gap: 16px;
-     margin-top: 8px;
-    }
-
-   .radio-group label {
-     font-size: 14px;
-     cursor: pointer;
-    }
-
-   /* =========================
-      ボタン系（時間・カテゴリ）
-   ========================= */
-   .button-group {
-     display: flex;
-     flex-wrap: wrap;
-     gap: 8px;
-    }
-
-   .btn {
-     padding: 8px 14px;
-     border-radius: 999px;
-     font-size: 13px;
-     border: 1px solid var(--dark-blue);
-     background: #fff;
-     cursor: pointer;
-     user-select: none;
-     transition: all 0.15s ease;
-    }
-
-   .btn:hover {
-     background: rgba(0,0,0,0.04);
-    }
-
-   .btn.selected {
-     background: var(--green);
-     border-color: var(--green);
-     color: var(--dark-blue);
-    }
-
-   /* =========================
-      メモ
-   ========================= */
-   textarea {
-     width: 100%;
-     border-radius: 14px;
-     border: none;
-     padding: 12px;
-     font-size: 14px;
-     resize: none;
-    }
-
-   /* =========================
-      登録ボタン（最重要）
-   ========================= */
-   .submit {
-     margin-top: 28px;
-     width: 100%;
-     padding: 16px;
-     border-radius: 18px;
-     border: none;
-     background: var(--dark-blue);
-     color: #fff;
-     font-size: 16px;
-     font-weight: 600;
-     cursor: pointer;
-     transition: transform 0.1s ease, background 0.2s ease;
-    }
-
-   .submit:active {
-     transform: scale(0.97);
-     background: var(--orange);
+    .submit {
+      margin-top: 28px;
+      width: 100%;
+      padding: 16px;
+      border-radius: 18px;
+      border: none;
+      background: var(--dark-blue);
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
     }
   </style>
-
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-
 </head>
 
 <body>
 
-  <!-- カレンダー -->
-  <div class="calendar">
-    <div class="calendar-header">
-      <button id="prevMonth">◀︎</button>
-      <span id="currentMonth">2025年1月</span>
-      <button id="nextMonth">▶︎</button>
-    </div>
-
-    <div class="weekdays">
-      <div>日</div><div>月</div><div>火</div><div>水</div><div>木</div><div>金</div><div>土</div>
-    </div>
-    <div class="dates" id="calendarDays"></div>
+<div class="calendar">
+  <div class="calendar-header">
+    <button id="prevMonth">◀</button>
+    <span id="currentMonth"></span>
+    <button id="nextMonth">▶</button>
   </div>
 
-
-  <!-- 予定タイプ -->
-  <h2>予定の種類</h2>
-  <div class="radio-group">
-    <label><input type="radio" name="scheduleType" value="me" checked> 自分の予定</label>
-    <label><input type="radio" name="scheduleType" value="both"> 2人の予定</label>
+  <div class="weekdays">
+    <div>日</div><div>月</div><div>火</div><div>水</div><div>木</div><div>金</div><div>土</div>
   </div>
 
-  <!-- 時間 -->
-  <h2>時間</h2>
-  <div class="button-group time-group">
-    <div class="btn">朝</div>
-    <div class="btn selected">昼</div>
-    <div class="btn">夕</div>
-    <div class="btn">夜</div>
-    <div class="btn">1日</div>
-  </div>
+  <div class="dates" id="calendarDays"></div>
+</div>
 
-  <!-- カテゴリ -->
-  <h2>カテゴリ</h2>
-  <div class="button-group category-group">
-    <div class="btn selected">友達</div>
-    <div class="btn">Create</div>
-    <div class="btn">Mainte</div>
-    <div class="btn">仕事</div>
-    <div class="btn">デート</div>
-    <div class="btn">家族</div>
-  </div>
+<h2>時間</h2>
+<div class="button-group time-group">
+  <div class="btn selected">昼</div>
+  <div class="btn">夜</div>
+  <div class="btn">1日</div>
+</div>
 
-  <!-- メモ -->
-  <h2>メモ</h2>
-  <textarea rows="3" placeholder="メモを入力（100文字以内）"></textarea>
+<h2>カテゴリ</h2>
+<div class="button-group category-group">
+  <div class="btn selected">友達</div>
+  <div class="btn">仕事</div>
+  <div class="btn">デート</div>
+</div>
 
-  <!-- 登録 -->
-  <button class="submit" id="submitBtn">登録する</button>
+<h2>メモ</h2>
+<textarea rows="3"></textarea>
 
-  <script>
-    // ▼▼▼ ここにGASのURLを貼る ▼▼▼
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbxxBytl1C5bqEbwQqEMSwid2h2KTfhiHPjC5gzbrAbBnOeUIu1IWiSqXo0-k8zL5d95NA/exec";
-    window.addEventListener("DOMContentLoaded", async () => {
-     await liff.init({
-      liffId: "2008794909-gcaJmGXJ"
-    });
+<button class="submit" id="submitBtn">登録する</button>
 
+<script>
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbxxBytl1C5bqEbwQqEMSwid2h2KTfhiHPjC5gzbrAbBnOeUIu1IWiSqXo0-k8zL5d95NA/exec";
+
+  let selectedDate = null;
+  let currentDate = new Date();
+  let myProfile = null;
+
+  // ===== LIFF 初期化 =====
+  window.addEventListener("DOMContentLoaded", async () => {
+    await liff.init({ liffId: "2008794909-gcaJmGXJ" });
     myProfile = await liff.getProfile();
-      
-    console.log("LIFF起動OK:", liff.isInClient());
-    console.log("自分のUSER_ID:", myProfile.userId);
-    });
-    
-  </script>
 
-  <script>
-    const submitBtn = document.getElementById("submitBtn");
-  
-    submitBtn.addEventListener("click", async () => {
-  
-      // ① 日付チェック
-      if (!selectedDate) {
-        alert("日付を選んでね");
-        return;
-      }
-
-      // ② 予定の種類
-      const owner = document.querySelector(
-        'input[name="scheduleType"]:checked'
-      ).value;
-
-      // ③ 時間（selected のものを取得）
-      const time = Array.from(
-        document.querySelectorAll(".time-group .btn.selected")
-      ).map(btn => btn.textContent).join(",");
-
-      // ④ カテゴリ
-      const category = document.querySelector(
-      ".category-group .btn.selected"
-      )?.textContent || "";
-
-      // ⑤ メモ
-      const memo = document.querySelector("textarea").value;
-
-      // ⑥ GASに送るデータ
-      const payload = {
-        date: selectedDate,
-        owner: owner,
-        time: time,
-        category: category,
-        memo: memo
-      };
-
-      console.log("送信データ", payload);
-
-      // ⑦ GASへPOST
-      try {
-        const res = await fetch(GAS_URL, {
-          method: "POST",
-          body: JSON.stringify(payload)
-        });
-
-        const result = await res.json();
-
-        if (result.result === "ok") {
-          alert("登録できたよ 🎉");
-          setTimeout(() => {
-           liff.closeWindow();
-          }, 300);
-
-          // liff.closeWindow(); ← LIFF組み込み後にON
-        } else {
-          alert("登録失敗 😢");
-          console.error(result);
-        }
-
-      } catch (err) {
-        alert("通信エラー 😢");
-        console.error(err);
-      }
-    });
-  </script>
-
-  <script>
-    let selectedDate = null;
-    let currentDate = new Date();
-
-    const monthLabel = document.getElementById("currentMonth");
-    const calendarDays = document.getElementById("calendarDays");
-
-    function renderCalendar() {
-      calendarDays.innerHTML = "";
-
-      const year = currentDate.getFullYear();
-      const month = currentDate.getMonth();
-
-      monthLabel.textContent = `${year}年${month + 1}月`;
-
-      const firstDay = new Date(year, month, 1).getDay();
-      const lastDate = new Date(year, month + 1, 0).getDate();
-
-      // ① 空白セル
-      for (let i = 0; i < firstDay; i++) {
-        const empty = document.createElement("div");
-        calendarDays.appendChild(empty);
-      }
-
-      // ② 日付セル
-      for (let day = 1; day <= lastDate; day++) {
-        const dateEl = document.createElement("div");
-        dateEl.textContent = day;
-
-        dateEl.addEventListener("click", () => {
-          document
-            .querySelectorAll(".dates div")
-            .forEach(el => el.classList.remove("selected"));
-
-          dateEl.classList.add("selected");
-
-          selectedDate = `${year}-${String(month + 1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-          console.log("選択中の日付:", selectedDate);
-        });
-
-        calendarDays.appendChild(dateEl);
-      }
-
-    }
+    // ★ USER_ID確認用（確認できたら消す）
+    alert("USER_ID:\n" + myProfile.userId);
 
     renderCalendar();
+  });
 
-    document.getElementById("prevMonth").addEventListener("click", () => {
-     currentDate.setMonth(currentDate.getMonth() - 1);
-     renderCalendar();
+  // ===== カレンダー =====
+  const monthLabel = document.getElementById("currentMonth");
+  const calendarDays = document.getElementById("calendarDays");
+
+  function renderCalendar() {
+    calendarDays.innerHTML = "";
+
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    monthLabel.textContent = `${year}年${month + 1}月`;
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+      calendarDays.appendChild(document.createElement("div"));
+    }
+
+    for (let day = 1; day <= lastDate; day++) {
+      const d = document.createElement("div");
+      d.textContent = day;
+
+      d.onclick = () => {
+        document.querySelectorAll(".dates div").forEach(el => el.classList.remove("selected"));
+        d.classList.add("selected");
+        selectedDate = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+      };
+
+      calendarDays.appendChild(d);
+    }
+  }
+
+  document.getElementById("prevMonth").onclick = () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+  };
+
+  document.getElementById("nextMonth").onclick = () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+  };
+
+  // ===== 登録 =====
+  document.getElementById("submitBtn").onclick = async () => {
+    if (!selectedDate) {
+      alert("日付を選んでね");
+      return;
+    }
+
+    let owner = "";
+    if (myProfile.userId === "舞ちゃんのUSER_ID") {
+      owner = "mai";
+    } else if (myProfile.userId === "彼氏のUSER_ID") {
+      owner = "takuya";
+    } else {
+      alert("登録者が判別できません");
+      return;
+    }
+
+    const time = [...document.querySelectorAll(".time-group .btn.selected")].map(b => b.textContent).join(",");
+    const category = document.querySelector(".category-group .btn.selected")?.textContent || "";
+    const memo = document.querySelector("textarea").value;
+
+    const payload = { date: selectedDate, owner, time, category, memo };
+
+    const res = await fetch(GAS_URL, {
+      method: "POST",
+      body: JSON.stringify(payload)
     });
 
-    document.getElementById("nextMonth").addEventListener("click", () => {
-     currentDate.setMonth(currentDate.getMonth() + 1);
-     renderCalendar();
-    });
-
-  </script>
-
-  <script>
-    const timeButtons = document.querySelectorAll(".time-group .btn");
-
-    timeButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        if (btn.textContent === "1日") {
-          // 1日を選んだら他を解除
-          timeButtons.forEach(b => b.classList.remove("selected"));
-          btn.classList.add("selected");
-        } else {
-          // 朝〜夜を選んだら「1日」を解除
-          timeButtons.forEach(b => {
-            if (b.textContent === "1日") b.classList.remove("selected");
-          });
-          btn.classList.toggle("selected");
-        }
-      });
-    });
-  </script>
-
-  <script>
-    const categoryButtons = document.querySelectorAll(".category-group .btn");
-
-    categoryButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        categoryButtons.forEach(b => b.classList.remove("selected"));
-        btn.classList.add("selected");
-      });
-    });
-  </script>
-
-  
-
+    const result = await res.json();
+    if (result.result === "ok") {
+      alert("登録できたよ！");
+      liff.closeWindow();
+    } else {
+      alert("登録失敗");
+    }
+  };
+</script>
 
 </body>
 </html>
