@@ -257,7 +257,7 @@
 
   <script>
     // ▼▼▼ ここにGASのURLを貼る ▼▼▼
-    const GAS_URL = "";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwpGgT1S7mVfVF_7KnPlLFYRKYIttXo21bBMKIHeuVD9B8DQPi2X5ISu-RYagU1fy5XIA/exec";
     let myProfile = null; // ←【追加①】
 
     window.addEventListener("DOMContentLoaded", async () => {
@@ -276,56 +276,55 @@
 
   <script>
     const submitBtn = document.getElementById("submitBtn");
-    window.addEventListener("DOMContentLoaded", () => {
   
-      submitBtn.addEventListener("click", async () => {
-        console.log("登録ボタン押された");
-
-        // ① 日付チェック
-        if (!selectedDate) {
+    submitBtn.addEventListener("click", async () => {
+  
+      // ① 日付チェック
+      if (!selectedDate) {
         alert("日付を選んでね");
         return;
       }
 
-        // ② 予定の種類
-        let owner = "";
+      // ② 予定の種類
+      let owner = "";
 
-        if (myProfile.userId === "U") {
+      if (myProfile.userId === "Uaf91e05353fdded14ddfb91c3032a52c") {
         owner = "mai";
-      } else if (myProfile.userId === "U") {
+      } else if (myProfile.userId === "U4ddaf3a91709ed5a72e6ad2704e2b4cf") {
         owner = "takuya";
-        } else {
+      } else {
         alert("登録者が判別できません");
         return;
       }
 
-        // ③ 時間（selected のものを取得）
-        const time = Array.from(
+
+      // ③ 時間（selected のものを取得）
+      const time = Array.from(
         document.querySelectorAll(".time-group .btn.selected")
       ).map(btn => btn.textContent).join(",");
 
-        // ④ カテゴリ
-        const category = document.querySelector(
+      // ④ カテゴリ
+      const category = document.querySelector(
       ".category-group .btn.selected"
       )?.textContent || "";
 
-        // ⑤ メモ
-        const memo = document.querySelector("textarea").value;
+      // ⑤ メモ
+      const memo = document.querySelector("textarea").value;
 
-        // ⑥ GASに送るデータ
-        const payload = {
+      // ⑥ GASに送るデータ
+      const payload = {
         date: selectedDate,
         owner: owner,
         time: time,
         category: category,
         memo: memo
-        userId: myProfile.userId   // ←これ追加
+        userId: myProfile.userId // ←追加(0127)
       };
 
-        console.log("送信データ", payload);
+      console.log("送信データ", payload);
 
-        // ⑦ GASへPOST
-        try {
+      // ⑦ GASへPOST
+      try {
         const res = await fetch(GAS_URL, {
           method: "POST",
           body: JSON.stringify(payload)
@@ -346,10 +345,9 @@
         }
 
       } catch (err) {
-          alert("通信エラー 😢");
-          console.error(err);
-        }
-      });  
+        alert("通信エラー 😢");
+        console.error(err);
+      }
     });
   </script>
 
@@ -392,7 +390,7 @@
 
         if (hasScheduleDates.includes(dateStr)) {
           const mark = document.createElement("div");
-          mark.textContent = "🐾"; // ← 好きな絵文字
+          mark.textContent = "🔥"; // ← 好きな絵文字
           mark.classList.add("mark");
           dateEl.appendChild(mark);
         }
