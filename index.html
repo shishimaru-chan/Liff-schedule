@@ -257,7 +257,7 @@
 
   <script>
     // ▼▼▼ ここにGASのURLを貼る ▼▼▼
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbxxBytl1C5bqEbwQqEMSwid2h2KTfhiHPjC5gzbrAbBnOeUIu1IWiSqXo0-k8zL5d95NA/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwpGgT1S7mVfVF_7KnPlLFYRKYIttXo21bBMKIHeuVD9B8DQPi2X5ISu-RYagU1fy5XIA/exec";
     let myProfile = null; // ←【追加①】
 
     window.addEventListener("DOMContentLoaded", async () => {
@@ -318,6 +318,7 @@
         time: time,
         category: category,
         memo: memo
+        userId: myProfile.userId // ←追加(0127)
       };
 
       console.log("送信データ", payload);
