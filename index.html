@@ -318,7 +318,7 @@
           date: selectedDate,
           owner: owner,
           time: time,
-         category: category,
+          category: category,
           memo: memo,
           userId: myProfile.userId // ←追加(0127)
         };
@@ -334,17 +334,11 @@
 
           const result = await res.json();
 
-          if (result.result === "ok") {
-            alert("登録できたよ 🎉");
-            setTimeout(() => {
-             liff.closeWindow();
-            }, 300);
+          // ★ ここを追加
+          console.log("GASの返却データ", result);
+          alert("GASの返却データ:\n" + JSON.stringify(result, null, 2));
 
-            // liff.closeWindow(); ← LIFF組み込み後にON
-          } else {
-            alert("登録失敗 😢");
-            console.error(result);
-          }
+          // いったん成功・失敗の分岐は無視する}
 
         } catch (err) {
           alert("通信エラー 😢");
@@ -393,7 +387,7 @@
 
         if (hasScheduleDates.includes(dateStr)) {
           const mark = document.createElement("div");
-          mark.textContent = "🔥"; // ← 好きな絵文字
+          mark.textContent = "🍎"; // ← 好きな絵文字
           mark.classList.add("mark");
           dateEl.appendChild(mark);
         }
