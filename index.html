@@ -276,56 +276,56 @@
 
   <script>
     const submitBtn = document.getElementById("submitBtn");
+    window.addEventListener("DOMContentLoaded", () => {
   
-    submitBtn.addEventListener("click", async () => {
-      console.log("登録ボタン押された");
+      submitBtn.addEventListener("click", async () => {
+        console.log("登録ボタン押された");
 
-
-      // ① 日付チェック
-      if (!selectedDate) {
+        // ① 日付チェック
+        if (!selectedDate) {
         alert("日付を選んでね");
         return;
       }
 
-      // ② 予定の種類
-      let owner = "";
+        // ② 予定の種類
+        let owner = "";
 
-      if (myProfile.userId === "U") {
+        if (myProfile.userId === "U") {
         owner = "mai";
       } else if (myProfile.userId === "U") {
         owner = "takuya";
-      } else {
+        } else {
         alert("登録者が判別できません");
         return;
       }
 
-
-      // ③ 時間（selected のものを取得）
-      const time = Array.from(
+        // ③ 時間（selected のものを取得）
+        const time = Array.from(
         document.querySelectorAll(".time-group .btn.selected")
       ).map(btn => btn.textContent).join(",");
 
-      // ④ カテゴリ
-      const category = document.querySelector(
+        // ④ カテゴリ
+        const category = document.querySelector(
       ".category-group .btn.selected"
       )?.textContent || "";
 
-      // ⑤ メモ
-      const memo = document.querySelector("textarea").value;
+        // ⑤ メモ
+        const memo = document.querySelector("textarea").value;
 
-      // ⑥ GASに送るデータ
-      const payload = {
+        // ⑥ GASに送るデータ
+        const payload = {
         date: selectedDate,
         owner: owner,
         time: time,
         category: category,
         memo: memo
+        userId: myProfile.userId   // ←これ追加
       };
 
-      console.log("送信データ", payload);
+        console.log("送信データ", payload);
 
-      // ⑦ GASへPOST
-      try {
+        // ⑦ GASへPOST
+        try {
         const res = await fetch(GAS_URL, {
           method: "POST",
           body: JSON.stringify(payload)
@@ -346,9 +346,10 @@
         }
 
       } catch (err) {
-        alert("通信エラー 😢");
-        console.error(err);
-      }
+          alert("通信エラー 😢");
+          console.error(err);
+        }
+      });  
     });
   </script>
 
