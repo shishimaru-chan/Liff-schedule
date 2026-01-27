@@ -257,7 +257,7 @@
 
   <script>
     // ▼▼▼ ここにGASのURLを貼る ▼▼▼
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbwpGgT1S7mVfVF_7KnPlLFYRKYIttXo21bBMKIHeuVD9B8DQPi2X5ISu-RYagU1fy5XIA/exec";
+    const GAS_URL = "";
     let myProfile = null; // ←【追加①】
 
     window.addEventListener("DOMContentLoaded", async () => {
@@ -278,7 +278,9 @@
     const submitBtn = document.getElementById("submitBtn");
   
     submitBtn.addEventListener("click", async () => {
-  
+      console.log("登録ボタン押された");
+
+
       // ① 日付チェック
       if (!selectedDate) {
         alert("日付を選んでね");
@@ -288,9 +290,9 @@
       // ② 予定の種類
       let owner = "";
 
-      if (myProfile.userId === "Uaf91e05353fdded14ddfb91c3032a52c") {
+      if (myProfile.userId === "U") {
         owner = "mai";
-      } else if (myProfile.userId === "U4ddaf3a91709ed5a72e6ad2704e2b4cf") {
+      } else if (myProfile.userId === "U") {
         owner = "takuya";
       } else {
         alert("登録者が判別できません");
@@ -318,7 +320,6 @@
         time: time,
         category: category,
         memo: memo
-        userId: myProfile.userId // ←追加(0127)
       };
 
       console.log("送信データ", payload);
@@ -390,7 +391,7 @@
 
         if (hasScheduleDates.includes(dateStr)) {
           const mark = document.createElement("div");
-          mark.textContent = "🔥"; // ← 好きな絵文字
+          mark.textContent = "🐾"; // ← 好きな絵文字
           mark.classList.add("mark");
           dateEl.appendChild(mark);
         }
