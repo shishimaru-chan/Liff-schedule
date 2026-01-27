@@ -275,79 +275,82 @@
   </script>
 
   <script>
-    const submitBtn = document.getElementById("submitBtn");
+    window.addEventListener("DOMContentLoaded", () => {
+     const submitBtn = document.getElementById("submitBtn");
   
-    submitBtn.addEventListener("click", async () => {
+     submitBtn.addEventListener("click", async () => {
+       console.log("登録ボタン押された");
   
-      // ① 日付チェック
-      if (!selectedDate) {
-        alert("日付を選んでね");
-        return;
-      }
-
-      // ② 予定の種類
-      let owner = "";
-
-      if (myProfile.userId === "Uaf91e05353fdded14ddfb91c3032a52c") {
-        owner = "mai";
-      } else if (myProfile.userId === "U4ddaf3a91709ed5a72e6ad2704e2b4cf") {
-        owner = "takuya";
-      } else {
-        alert("登録者が判別できません");
-        return;
-      }
-
-
-      // ③ 時間（selected のものを取得）
-      const time = Array.from(
-        document.querySelectorAll(".time-group .btn.selected")
-      ).map(btn => btn.textContent).join(",");
-
-      // ④ カテゴリ
-      const category = document.querySelector(
-      ".category-group .btn.selected"
-      )?.textContent || "";
-
-      // ⑤ メモ
-      const memo = document.querySelector("textarea").value;
-
-      // ⑥ GASに送るデータ
-      const payload = {
-        date: selectedDate,
-        owner: owner,
-        time: time,
-        category: category,
-        memo: memo
-        userId: myProfile.userId // ←追加(0127)
-      };
-
-      console.log("送信データ", payload);
-
-      // ⑦ GASへPOST
-      try {
-        const res = await fetch(GAS_URL, {
-          method: "POST",
-          body: JSON.stringify(payload)
-        });
-
-        const result = await res.json();
-
-        if (result.result === "ok") {
-          alert("登録できたよ 🎉");
-          setTimeout(() => {
-           liff.closeWindow();
-          }, 300);
-
-          // liff.closeWindow(); ← LIFF組み込み後にON
-        } else {
-          alert("登録失敗 😢");
-          console.error(result);
+       // ① 日付チェック
+       if (!selectedDate) {
+         alert("日付を選んでね");
+         return;
         }
 
-      } catch (err) {
-        alert("通信エラー 😢");
-        console.error(err);
-      }
+        // ② 予定の種類
+        let owner = "";
+
+        if (myProfile.userId === "Uaf91e05353fdded14ddfb91c3032a52c") {
+          owner = "mai";
+        } else if (myProfile.userId === "U4ddaf3a91709ed5a72e6ad2704e2b4cf") {
+          owner = "takuya";
+        } else {
+          alert("登録者が判別できません");
+          return;
+        }
+
+
+        // ③ 時間（selected のものを取得）
+        const time = Array.from(
+          document.querySelectorAll(".time-group .btn.selected")
+        ).map(btn => btn.textContent).join(",");
+  
+        // ④ カテゴリ
+        const category = document.querySelector(
+        ".category-group .btn.selected"
+        )?.textContent || "";
+
+        // ⑤ メモ
+        const memo = document.querySelector("textarea").value;
+
+        // ⑥ GASに送るデータ
+        const payload = {
+          date: selectedDate,
+          owner: owner,
+          time: time,
+         category: category,
+          memo: memo
+          userId: myProfile.userId // ←追加(0127)
+        };
+
+        console.log("送信データ", payload);
+
+        // ⑦ GASへPOST
+        try {
+          const res = await fetch(GAS_URL, {
+            method: "POST",
+            body: JSON.stringify(payload)
+          });
+
+          const result = await res.json();
+
+          if (result.result === "ok") {
+            alert("登録できたよ 🎉");
+            setTimeout(() => {
+             liff.closeWindow();
+            }, 300);
+
+            // liff.closeWindow(); ← LIFF組み込み後にON
+          } else {
+            alert("登録失敗 😢");
+            console.error(result);
+          }
+
+        } catch (err) {
+          alert("通信エラー 😢");
+          console.error(err);
+        }
+      });    
     });
   </script>
 
