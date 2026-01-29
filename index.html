@@ -172,7 +172,7 @@
 
   <script>
     // ▼▼▼ GASのURL（GET用） ▼▼▼
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbwzl_H9ya4xv9AI7Fy5IjSAC-Tmi5lNTDWaRjZ3ffMfD553KjJ3DQjdo-F91__SUiuomA/exec"
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxCzI6ODaI7u2Xf-JGpr89f66bkJrOI_kV-MlBjN_NqfyYAB82MZ32jnegRO93xF9opEA/exec"
     let schedules = [];   // ← 全予定を入れる
     let scheduleMap = {};
     let currentDate = new Date();
@@ -231,9 +231,7 @@
 
                  <div class="actions">
                    <button onclick="alert('編集は次！')">編集</button>
-                   <button class="delete-btn" data-id="${item.id}">
-                      削除
-                   </button>
+                   <button onclick="deleteSchedule('${item.id}')">削除</button>
                  </div>
                </div>
               </div>
@@ -340,25 +338,28 @@
       if (!e.target.classList.contains("delete-btn")) return;
 
       const id = e.target.dataset.id;
-      
+      alert("削除ボタン押された！\nID: " + id);
+    }); 
+
+    function deleteSchedule(id) {
+      console.log("削除ID:", id);
+
       fetch(GAS_URL, {
-       method: "POST",
-       body: JSON.stringify({
-         action: "delete",
-         id: id
+        method: "POST",
+        body: JSON.stringify({
+          action: "delete",
+          id: id
         })
       })
-     .then(res => res.json())
-     .then(() => {
-       alert("削除したよ");
-       location.reload();
+      .then(res => res.json())
+      .then(data => {
+        alert("削除できた！");
       })
-     .catch(err => {
-       alert("削除失敗 😢");
-       console.error(err);
+      .catch(err => {
+        alert("削除失敗 😢");
+        console.error(err);
       });
-
-    });
+    }
     
   </script>
 
