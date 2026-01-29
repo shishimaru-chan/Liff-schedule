@@ -342,6 +342,27 @@
       const id = e.target.dataset.id;
       alert("削除ボタン押された！\nID: " + id);
     }); 
+
+    fetch(GAS_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+     body: JSON.stringify({
+        action: "delete",
+        id: id
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+  alert("削除リクエスト送信完了！");
+  console.log(data);
+})
+    .catch(err => {
+      alert("通信エラー 😢");
+      console.error(err);
+    });
+
       
     
   </script>
