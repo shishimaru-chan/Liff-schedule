@@ -112,7 +112,7 @@
     ========================= */
 　　 /* ラジオボタンの丸いポチを消す*/
     .type-selection input[type="radio"] {
-      display: none;
+      display: none !important;;
     } 
 
     /* 2つのボタンを横に並べる */
@@ -140,7 +140,7 @@
 
     /* ✅ チェック（選択）された時のデザイン */
     .type-btn:has(input:checked) {
-      background-color: var(--dark-blue);
+      background-color: #1A0089;
       color: white;
       transform: translateY(-2px); /* 少し浮き上がる */
       box-shadow: 0 4px 10px rgba(26, 0, 137, 0.3);
