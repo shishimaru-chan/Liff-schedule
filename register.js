@@ -102,7 +102,8 @@ function renderCalendar() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  monthLabel.textContent = `${year}年${month + 1}月`;
+  const displayMonth = String(month + 1).padStart(2, "0"); // 1月を "01" にする魔法
+  monthLabel.textContent = `${year}.${displayMonth}`;;
 
   const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
   const lastDate = new Date(year, month + 1, 0).getDate();
