@@ -50,8 +50,11 @@
     }
 
    .calendar-header span {
-     cursor: pointer;
-     user-select: none;
+     font-family: 'Montserrat', sans-serif;
+     font-size: 20px;
+     letter-spacing: 2px;
+     font-weight: 300;
+     color: #1A0089
     }
 
    .weekdays,
