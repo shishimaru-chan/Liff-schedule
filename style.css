@@ -178,8 +178,8 @@
     }*/
 
    .btn.selected {
-     background-color: #1A0089;
-     color: #ffffff;
+     background-color: #ff5e33;
+     color: #efe7d3;
      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
