@@ -117,38 +117,41 @@ function renderCalendar() {
   // ② 日付セル
   for (let day = 1; day <= lastDate; day++) {
     const dateEl = document.createElement('div');
-    dateEl.textContent = day;
+    
+    // 【重要】まず数字を入れる！（これが消えてたかも）
+    dateEl.textContent = day; 
 
-    const now = new Date(); // 今の本当の時間を取得
-    if (
-      day === now.getDate() && 
-      month === now.getMonth() && 
-      year === now.getFullYear()
-    ) {
-      dateEl.classList.add('today'); // これでCSSの .today が発動するよ！
+    const now = new Date();
+    if (day === now.getDate() && month === now.getMonth() && year === now.getFullYear()) {
+      dateEl.classList.add('today');
     }
 
-    // 2. 土日の判定（これもお忘れなく！）
     const dayOfWeek = new Date(year, month, day).getDay();
     if (dayOfWeek === 0) dateEl.classList.add('sunday');
     if (dayOfWeek === 6) dateEl.classList.add('saturday');
 
+    // この日の日付文字列を作る（保存・読み込み用）
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+    // --- ここがステップ1の「絵文字チェック」 ---
+    const savedEmoji = localStorage.getItem(dateStr); 
+    if (savedEmoji) {
+      const mark = document.createElement('span');
+      mark.className = 'mark';
+      mark.textContent = savedEmoji; 
+      dateEl.appendChild(mark);
+    }
+    // ---------------------------------------
 
     dateEl.addEventListener('click', () => {
-      // 全員から選択を外す
       document.querySelectorAll('.dates div').forEach(el => el.classList.remove('selected'));
-
-      // クリックしたやつに選択をつける
       dateEl.classList.add('selected');
-
-      selectedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      selectedDate = dateStr;
       console.log('選択中の日付:', selectedDate);
     });
-
     calendarDays.appendChild(dateEl);
   }
 }
-
 
 renderCalendar();
 
@@ -187,4 +190,42 @@ categoryButtons.forEach((btn) => {
     categoryButtons.forEach((b) => b.classList.remove('selected'));
     btn.classList.add('selected');
   });
+});
+
+// --- 1. すでに上の方で定義されているかもしれないので、再定義エラーを防ぐ ---
+const finalSubmitBtn = document.getElementById('submitBtn');
+
+// --- 2. 登録ボタンの処理をこれ一つにまとめる！ ---
+finalSubmitBtn.addEventListener('click', () => {
+  console.log('登録ボタン押された');
+
+  // ① 日付が選ばれているかチェック
+  if (!selectedDate) {
+    alert('日付を選んでね！');
+    return;
+  }
+
+  // ② ラジオボタンで「チェックが入っている方」を捕まえる
+  const selectedInput = document.querySelector('input[name="scheduleType"]:checked');
+
+  if (!selectedInput) {
+    alert('「自分の予定」か「2人の予定」を選んでね！');
+    return;
+  }
+
+  // ③ value（me か both）を見て、出す絵文字を決める
+  let emoji = '';
+  if (selectedInput.value === 'both') {
+    emoji = '🍒'; // 2人の予定ならサクランボ
+  } else if (selectedInput.value === 'me') {
+    emoji = '🍯'; // 自分の予定ならハチミツ
+  }
+
+  // ④ ローカルストレージに保存！
+  localStorage.setItem(selectedDate, emoji);
+  
+  // ⑤ カレンダーを最新の状態に描き直す（これで絵文字が出る！）
+  renderCalendar();
+
+  alert(`${selectedDate} に ${emoji} を登録したよ！`);
 });
