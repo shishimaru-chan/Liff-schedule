@@ -138,6 +138,23 @@
       border-radius: 50% !important;
     }
 
+    /* 日付セルの位置を基準にする */
+    .dates div {
+      position: relative; 
+    }
+
+    /* 絵文字を入れる場所の指定 */
+    .dates .mark {
+     position: absolute;
+      bottom: -2px;      /* 数字のすぐ下に配置 */
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;   /* 絵文字を小さめに表示 */
+      line-height: 1;
+      pointer-events: none; /* クリックの邪魔をしない */
+    }
+
+
     /* =========================
       ボタン系（予定の種類）
     ========================= */
