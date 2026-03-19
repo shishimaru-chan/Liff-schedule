@@ -44,9 +44,9 @@
      display: flex;
      justify-content: space-between;
      align-items: center;
-　　　margin-bottom: 20px; /* 少しスキマを広げる */
- 　　 padding: 0 10px; /* 左右に少し余裕を */ 
-   }
+     margin-bottom: 20px; /* 少しスキマを広げる */
+     padding: 0 10px; /* 左右に少し余裕を */ 
+    }
 
    .calendar-header span {
      font-family: 'Montserrat', sans-serif;
@@ -102,9 +102,14 @@
      color: #fff;
     }
 
-   .dates .today {
-     border: 1.5px solid var(--green);
+   .dates div.today {
+     background-color: #B7CF4F !important; /* あの黄緑色 */
+     color: #ffffff !important;           /* 文字を白くして読みやすく */
+     border-radius: 50% !important;        /* まん丸にする */
+     border: none !important;              /* 枠線を消してスッキリ */
+     font-weight: 800 !important;          /* 数字を太くして強調 */
     }
+    
 
    /* マーク用（後でJSから追加される想定） */
    .dates .mark {
@@ -124,14 +129,13 @@
     .saturday {
       color: #3A6FD8; /* 青っぽい */
     }
-
-    /* 今日の日付を可愛く塗りつぶす */
-    .dates div.today {
-      background-color: #B7CF4F !important; /* あの黄緑色 */
-      color: #ffffff !important;           /* 文字を白くして読みやすく */
-      border-radius: 50% !important;        /* まん丸にする */
-      border: none !important;              /* 枠線を消してスッキリ */
-      font-weight: 800 !important;          /* 数字を太くして強調 */
+    
+    /* 今日かつ選択されている時は、オレンジを優先する！ */
+    .dates div.today.selected,
+    .dates div.selected {
+      background-color: var(--orange) !important;
+      color: #fff !important;
+      border-radius: 50% !important;
     }
 
     /* =========================
