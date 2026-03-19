@@ -125,6 +125,15 @@
       color: #3A6FD8; /* 青っぽい */
     }
 
+    /* 今日の日付を可愛く塗りつぶす */
+    .dates div.today {
+      background-color: #B7CF4F !important; /* あの黄緑色 */
+      color: #ffffff !important;           /* 文字を白くして読みやすく */
+      border-radius: 50% !important;        /* まん丸にする */
+      border: none !important;              /* 枠線を消してスッキリ */
+      font-weight: 800 !important;          /* 数字を太くして強調 */
+    }
+
     /* =========================
       ボタン系（予定の種類）
     ========================= */
