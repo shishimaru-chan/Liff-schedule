@@ -56,22 +56,22 @@
      color: #1A0089
     }
 
-　　.calendar-header button {
-　　  width: 36px;
-  　　height: 36px;
- 　　 border-radius: 50%; /* まん丸！ */
- 　　 border: 1px solid #eee; /* 薄いグレーの線 */
- 　　 background: #fff;
-  　　color: #1A0089;
- 　　 font-size: 12px; /* 記号の大きさ */
-  　　display: flex;
-  　　align-items: center;
-  　　justify-content: center;
-  　　cursor: pointer;
-  　　box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* ほんのり影 */
-  　　transition: all 0.2s;
-  　　-webkit-appearance: none; /* iPhoneでボタンが変な形になるのを防ぐ */
-　　}
+    .calendar-header button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%; /* まん丸！ */
+      border: 1px solid #eee; /* 薄いグレーの線 */
+      background: #fff;
+      color: #1A0089;
+      font-size: 12px; /* 記号の大きさ */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* ほんのり影 */
+      transition: all 0.2s;
+      -webkit-appearance: none; /* iPhoneでボタンが変な形になるのを防ぐ */
+    }
 
    .weekdays,
    .dates {
