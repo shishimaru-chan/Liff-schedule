@@ -119,23 +119,26 @@ function renderCalendar() {
     const dateEl = document.createElement('div');
     dateEl.textContent = day;
 
-    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-
-
-    const dayOfWeek = new Date(year, month, day).getDay();
-
-    if (dayOfWeek === 0) {
-      dateEl.classList.add('sunday');
-    } else if (dayOfWeek === 6) {
-      dateEl.classList.add('saturday');
+    const now = new Date(); // 今の本当の時間を取得
+    if (
+      day === now.getDate() && 
+      month === now.getMonth() && 
+      year === now.getFullYear()
+    ) {
+      dateEl.classList.add('today'); // これでCSSの .today が発動するよ！
     }
 
-    dateEl.addEventListener('click', () => {
-      if (!dateEl.textContent) return;
-      document
-        .querySelectorAll('.dates div:not(:empty)')
-        .forEach((el) => el.classList.remove('selected'));
+    // 2. 土日の判定（これもお忘れなく！）
+    const dayOfWeek = new Date(year, month, day).getDay();
+    if (dayOfWeek === 0) dateEl.classList.add('sunday');
+    if (dayOfWeek === 6) dateEl.classList.add('saturday');
 
+
+    dateEl.addEventListener('click', () => {
+      // 全員から選択を外す
+      document.querySelectorAll('.dates div').forEach(el => el.classList.remove('selected'));
+
+      // クリックしたやつに選択をつける
       dateEl.classList.add('selected');
 
       selectedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -145,6 +148,7 @@ function renderCalendar() {
     calendarDays.appendChild(dateEl);
   }
 }
+
 
 renderCalendar();
 
