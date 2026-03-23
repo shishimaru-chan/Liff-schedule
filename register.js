@@ -15,78 +15,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 window.addEventListener('DOMContentLoaded', () => {
   const submitBtn = document.getElementById('submitBtn');
-
-  submitBtn.addEventListener('click', async () => {
-    console.log('登録ボタン押された');
-
-    // ① 日付チェック
-    if (!selectedDate) {
-      alert('日付を選んでね');
-      return;
-    }
-
-    // ② 予定の種類
-    let owner = '';
-
-    if (myProfile.userId === 'Uaf91e05353fdded14ddfb91c3032a52c') {
-      owner = 'mai';
-    } else if (myProfile.userId === 'U4ddaf3a91709ed5a72e6ad2704e2b4cf') {
-      owner = 'takuya';
-    } else {
-      alert('登録者が判別できません');
-      return;
-    }
-
-    // ③ 時間（selected のものを取得）
-    const time = Array.from(
-      document.querySelectorAll('.time-group .btn.selected'),
-    )
-      .map((btn) => btn.textContent)
-      .join(',');
-
-    // ④ カテゴリ
-    const category =
-      document.querySelector('.category-group .btn.selected')?.textContent ||
-      '';
-
-    // ⑤ メモ
-    const memo = document.querySelector('textarea').value;
-
-    // ⑥ GASに送るデータ
-    const payload = {
-      date: selectedDate,
-      owner: owner,
-      time: time,
-      category: category,
-      memo: memo,
-      userId: myProfile.userId, // ←追加(0127)
-    };
-
-    console.log('送信データ', payload);
-
-    // ⑦ GASへPOST
-    try {
-      const res = await fetch(GAS_URL, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      });
-
-      const result = await res.json();
-
-      if (result.result === 'ok') {
-        alert('登録できたよ 🎉');
-        setTimeout(() => {
-          liff.closeWindow();
-        }, 300);
-      } else {
-        alert('登録失敗 😢');
-        console.error(result);
-      }
-    } catch (err) {
-      alert('通信エラー 😢');
-      console.error(err);
-    }
-  });
 });
 
 let selectedDate = null;
@@ -192,40 +120,66 @@ categoryButtons.forEach((btn) => {
   });
 });
 
-// --- 1. すでに上の方で定義されているかもしれないので、再定義エラーを防ぐ ---
+// --- 2. 登録ボタンの処理をこれ一つにまとめる！ ---
+// --- 1. ボタンを特定 ---
 const finalSubmitBtn = document.getElementById('submitBtn');
 
-// --- 2. 登録ボタンの処理をこれ一つにまとめる！ ---
-finalSubmitBtn.addEventListener('click', () => {
-  console.log('登録ボタン押された');
+// --- 2. 登録ボタンの処理（ここ！ () の前に async を入れるのが超大事！） ---
+finalSubmitBtn.addEventListener('click', async () => { 
+  console.log('登録ボタン押された（完全合体版）');
 
-  // ① 日付が選ばれているかチェック
-  if (!selectedDate) {
-    alert('日付を選んでね！');
-    return;
+  // テスト用プロフィールの設定
+  if (!myProfile) {
+    myProfile = {
+      userId: 'Uaf91e05353fdded14ddfb91c3032a52c',
+      displayName: 'まい（テスト中）'
+    };
   }
 
-  // ② ラジオボタンで「チェックが入っている方」を捕まえる
+  // ① 日付チェック
+  if (!selectedDate) return alert('日付を選んでね！');
+
+  // ② 誰が操作しているか判定
+  let loginUser = (myProfile.userId === 'Uaf91e05353fdded14ddfb91c3032a52c') ? 'mai' : 'takuya';
+
+  // ③ ラジオボタンの選択確認
   const selectedInput = document.querySelector('input[name="scheduleType"]:checked');
+  if (!selectedInput) return alert('「自分の予定」か「2人の予定」を選んでね！');
 
-  if (!selectedInput) {
-    alert('「自分の予定」か「2人の予定」を選んでね！');
-    return;
-  }
+  // ④ スプシに送る名前と絵文字を決定
+  let finalOwner = (selectedInput.value === 'both') ? 'both' : loginUser;
+  let emoji = (finalOwner === 'both') ? '🍒' : (finalOwner === 'mai' ? '🍯' : '🍆');
 
-  // ③ value（me か both）を見て、出す絵文字を決める
-  let emoji = '';
-  if (selectedInput.value === 'both') {
-    emoji = '🍒'; // 2人の予定ならサクランボ
-  } else if (selectedInput.value === 'me') {
-    emoji = '🍯'; // 自分の予定ならハチミツ
-  }
-
-  // ④ ローカルストレージに保存！
+  // ⑤ スマホ(LocalStorage)に保存＆カレンダー更新
   localStorage.setItem(selectedDate, emoji);
-  
-  // ⑤ カレンダーを最新の状態に描き直す（これで絵文字が出る！）
   renderCalendar();
 
+  // ⑥ 入力値の取得（時間・カテゴリ・メモ）
+  const time = Array.from(document.querySelectorAll('.time-group .btn.selected')).map(b => b.textContent).join(',');
+  const category = document.querySelector('.category-group .btn.selected')?.textContent || '';
+  const memo = document.querySelector('textarea').value;
+
+  // ⑦ GASに送る荷物（payload）
+  const payload = {
+    date: selectedDate,
+    owner: finalOwner,
+    time: time,
+    category: category,
+    memo: memo,
+    userId: myProfile.userId
+  };
+
   alert(`${selectedDate} に ${emoji} を登録したよ！`);
-});
+
+  // ⑧ 【ここが await を使う場所！】
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+    const result = await res.json();
+    console.log('GAS送信結果:', result);
+  } catch (err) {
+    console.error('GAS送信エラー:', err);
+  }
+}); // ← 最後の閉じカッコ
