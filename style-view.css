@@ -1,1 +1,59 @@
+/* カレンダーの日付セルを登録ページと合わせる */
+.dates div {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  cursor: pointer;
+  border-radius: 50%; /* 選択時に丸くする準備 */
+  transition: 0.2s;
+}
 
+/* 選択された日の色（オレンジ） */
+.dates div.selected {
+  background: var(--orange) !important;
+  color: #fff !important;
+  border-radius: 12px; /* 登録ページに合わせて少し角丸に */
+}
+
+/* 予定カードのオシャレ化 */
+.schedule-card {
+  background: #fff;
+  border-radius: 20px; /* もっと丸く！ */
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 15px rgba(26, 0, 137, 0.08); /* ほんのり影をつける */
+  border-left: 6px solid var(--dark-blue); /* 左側にアクセントライン */
+  animation: fadeIn 0.3s ease-out; /* ふわっと出す */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.schedule-owner {
+  font-size: 16px;
+  color: var(--dark-blue);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tag {
+  background: var(--cream);
+  color: var(--dark-blue);
+  font-weight: 600;
+  border: 1px solid rgba(26, 0, 137, 0.1);
+}
+
+.delete-btn {
+  background: #fff !important;
+  color: #ff5e33 !important;
+  border: 1px solid #ff5e33 !important;
+  padding: 4px 12px !important;
+  border-radius: 8px !important;
+  font-weight: bold;
+}
