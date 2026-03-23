@@ -1,3 +1,15 @@
+/* 共通の「色」だけ定義しておく */
+:root {
+  --orange: #FF5E33;
+  --cream: #EFE7D3;
+  --dark-blue: #1A0089;
+}
+
+/* 使うときはこう書く */
+body {
+  background-color: var(--cream);
+}
+
 /* カレンダーの日付セルを登録ページと合わせる */
 .dates div {
   position: relative;
