@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+ <head>
+  <meta charset="UTF-8" />
+  <title>予定登録</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css">
+
+  <!-- フォント -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&family=Noto+Sans+JP:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+ </head>
+
+ <body>
+
+  <!-- カレンダー -->
+  <div class="calendar">
+    <div class="calendar-header">
+      <button id="prevMonth">◀︎</button>
+      <span id="currentMonth">2025年1月</span>
+      <button id="nextMonth">▶︎</button>
+    </div>
+
+    <div class="weekdays">
+      <div>月</div><div>火</div><div>水</div><div>木</div><div>金</div><div>土</div><div>日</div>
+    </div>
+    <div class="dates" id="calendarDays"></div>
+  </div>
+
+  <!-- 予定タイプ -->
+  <h2>予定の種類</h2>
+  <div class="type-selection">
+   <label class="type-btn">
+    <input type="radio" name="scheduleType" value="me" checked> <span class="type-label">自分の予定</span>
+   </label>
+    <label class="type-btn">
+     <input type="radio" name="scheduleType" value="both"> <span class="type-label">2人の予定</span>
+    </label>
+  </div>
+
+  <!-- 時間 -->
+  <h2>時間</h2>
+  <div class="button-group time-group">
+    <div class="btn">朝</div>
+    <div class="btn selected">昼</div>
+    <div class="btn">夕</div>
+    <div class="btn">夜</div>
+    <div class="btn">1日</div>
+  </div>
+
+  <!-- カテゴリ -->
+  <h2>カテゴリ</h2>
+  <div class="button-group category-group">
+    <div class="btn selected">友達</div>
+    <div class="btn">Create</div>
+    <div class="btn">Mainte</div>
+    <div class="btn">仕事</div>
+    <div class="btn">デート</div>
+    <div class="btn">家族</div>
+  </div>
+
+  <!-- メモ -->
+  <h2>メモ</h2>
+  <textarea rows="3" placeholder="メモを入力（100文字以内）"></textarea>
+
+  <!-- 登録 -->
+  <button class="submit" id="submitBtn">登録する</button>
+  <script src="register.js"></script>
+ </body>
+</html>
