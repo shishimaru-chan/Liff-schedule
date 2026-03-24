@@ -423,3 +423,52 @@
 .edit-circle-btn:active, .delete-circle-btn:active {
   transform: scale(0.9);
 }
+
+/* ボタンの入れ物を画面の底に固定する */
+.bottom-button-container {
+  position: fixed;      /* 画面に固定 */
+  bottom: 0;            /* 一番下にピタッ */
+  left: 0;
+  right: 0;
+  padding: 16px 20px 30px; /* 下側に少し余裕を持たせる（スマホのバー対策） */
+  background: linear-gradient(to top, rgba(255,255,255,1) 70%, rgba(255,255,255,0)); /* 背景を少し白くぼかすと文字と重なっても読みやすい */
+  z-index: 1000;        /* カレンダーより必ず上に表示 */
+}
+
+/* ボタン本体のデザイン */
+.main-button {
+  width: 100%;
+  padding: 16px;
+  background-color: #FF5E33; /* オレンジ */
+  color: white;
+  border: none;
+  border-radius: 50px;       /* 角を丸くして「カプセル型」にすると可愛い！ */
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 8px 20px rgba(255, 94, 51, 0.4); /* 浮いてる感を出す影 */
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.main-button:active {
+  transform: scale(0.95);    /* 押した時の「ぷにっ」とした感触 */
+}
+
+/* ★重要：予定リストがボタンに隠れないように、リストの下に余白を作る */
+#scheduleList {
+  margin-bottom: 100px;      /* ボタンの分だけ隙間をあける */
+}
+
+.main-button {
+  width: 100%;
+  padding: 14px;
+  background-color: #FF5E33; /* 登録ページと同じオレンジ */
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(255, 94, 51, 0.3);
+  transition: transform 0.1s;
+}
