@@ -172,3 +172,8 @@ document.getElementById("nextMonth").addEventListener("click", () => {
   
   renderCalendar();
 });
+
+document.getElementById("goToInput").addEventListener("click", () => {
+  // index.html に移動する（同じフォルダにある場合）
+  window.location.href = "index.html";
+});
