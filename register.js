@@ -129,12 +129,12 @@ finalSubmitBtn.addEventListener('click', async () => {
   console.log('登録ボタン押された（完全合体版）');
 
   // テスト用プロフィールの設定
-  if (!myProfile) {
-    myProfile = {
-      userId: 'Uaf91e05353fdded14ddfb91c3032a52c',
-      displayName: 'まい（テスト中）'
-    };
-  }
+  //if (!myProfile) {
+    //myProfile = {
+      //userId: 'Uaf91e05353fdded14ddfb91c3032a52c',
+      //displayName: 'まい（テスト中）'
+    //};
+  //}
 
   // ① 日付チェック
   if (!selectedDate) return alert('日付を選んでね！');
@@ -161,6 +161,7 @@ finalSubmitBtn.addEventListener('click', async () => {
 
   // ⑦ GASに送る荷物（payload）
   const payload = {
+    id: document.getElementById('editId')?.value || null, // ★ここを追加！
     date: selectedDate,
     owner: finalOwner,
     time: time,
