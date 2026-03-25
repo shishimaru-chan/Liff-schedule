@@ -191,48 +191,69 @@ window.addEventListener('DOMContentLoaded', () => {
   
   // 2. 「編集モード(edit=true)」かどうかチェック
   if (params.get('edit') === 'true') {
-    console.log("編集モードで起動したよ！");
+    console.log("編集モード起動！データを復元します。");
 
-    // 3. 各入力欄にデータをセット
-    // ※ id名（memo, category等）は、まいちゃんのHTMLのidに合わせてね！
-    if (params.get('memo')) {
-      document.getElementById('memo').value = params.get('memo');
+    // 1. メモの復元（textarea）
+    const memoValue = params.get('memo');
+    if (memoValue) {
+      const memoEl = document.querySelector('textarea') || document.getElementById('memo');
+      if (memoEl) memoEl.value = memoValue;
     }
     
-    if (params.get('category')) {
-      document.getElementById('category').value = params.get('category');
+    // 2. カテゴリボタンの復元
+    const categoryValue = params.get('category');
+    if (categoryValue) {
+      document.querySelectorAll('.category-group .btn').forEach(btn => {
+        if (btn.textContent === categoryValue) {
+          btn.classList.add('selected');
+        } else {
+          btn.classList.remove('selected');
+        }
+      });
     }
 
-    if (params.get('date')) {
-      document.getElementById('date').value = params.get('date');
+    // 3. 時間ボタンの復元
+    const timesStr = params.get('times');
+    if (timesStr) {
+      const timesArray = timesStr.split(',');
+      document.querySelectorAll('.time-group .btn').forEach(btn => {
+        if (timesArray.includes(btn.textContent)) {
+          btn.classList.add('selected');
+        } else {
+          btn.classList.remove('selected');
+        }
+      });
     }
 
-    // 時間（times）の処理
-    // "10:00,11:00" みたいな文字列で届くから、分割してセット
-    const times = params.get('times') ? params.get('times').split(',') : [];
-    if (times.length > 0) {
-      // 最初の時間をセット（input type="time" の場合）
-      if (document.getElementById('startTime')) {
-        document.getElementById('startTime').value = times[0];
-      }
-      // 終わりの時間があればセット
-      if (times.length > 1 && document.getElementById('endTime')) {
-        document.getElementById('endTime').value = times[times.length - 1];
-      }
+    // 4. 日付の復元
+    const dateValue = params.get('date');
+    if (dateValue) {
+      selectedDate = dateValue; // 変数にセット
+      // カレンダーの見た目も選ばれた状態にする（少し時間がかかるので描画後に実行）
+      setTimeout(() => {
+        const year = parseInt(dateValue.split('-')[0]);
+        const month = parseInt(dateValue.split('-')[1]) - 1;
+        currentDate = new Date(year, month, 1);
+        renderCalendar();
+        // 該当する日のセルを青くする処理が必要ならここに追加
+      }, 100);
     }
 
-    // 4. 「登録」ボタンの文字を「更新する」に変える
-    const submitBtn = document.querySelector('button[type="submit"]') || document.getElementById('submitBtn');
+    // 5. ボタンを「更新する」に変える
+    const submitBtn = document.getElementById('submitBtn');
     if (submitBtn) {
       submitBtn.innerText = "予定を更新する";
-      submitBtn.style.backgroundColor = "#4CAF50"; // 更新時は色を変えると分かりやすい！
+      submitBtn.style.backgroundColor = "#4CAF50";
     }
 
-    // 5. 重要：編集対象の「ID」を隠し要素として持っておく（あとでGASに送るため）
-    const hiddenId = document.createElement('input');
-    hiddenId.type = 'hidden';
-    hiddenId.id = 'editId';
+    // 6. IDを保存（これが無いと上書きできない！）
+    let hiddenId = document.getElementById('editId');
+    if (!hiddenId) {
+      hiddenId = document.createElement('input');
+      hiddenId.type = 'hidden';
+      hiddenId.id = 'editId';
+      document.body.appendChild(hiddenId);
+    }
     hiddenId.value = params.get('id');
-    document.body.appendChild(hiddenId);
   }
 });
