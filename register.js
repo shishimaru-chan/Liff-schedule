@@ -172,7 +172,7 @@ finalSubmitBtn.addEventListener('click', async () => {
 
   alert(`${selectedDate} に ${emoji} を登録したよ！`);
 
-  // ⑧ 【ここが await を使う場所！】
+  // ⑧ GAS送信と、送信後の処理
   try {
     const res = await fetch(GAS_URL, {
       method: 'POST',
@@ -180,8 +180,15 @@ finalSubmitBtn.addEventListener('click', async () => {
     });
     const result = await res.json();
     console.log('GAS送信結果:', result);
+
+    // ★ ここを追加！送信が成功したらちょっと待ってから閉じる
+    if (result.result === "ok") {
+      alert("完了したよ！トーク画面に戻るね✨");
+      liff.closeWindow(); // これでLIFFが自動で閉じるよ！
+    }
   } catch (err) {
     console.error('GAS送信エラー:', err);
+    alert("エラーが起きちゃった😭");
   }
 }); // ← 最後の閉じカッコ
 
