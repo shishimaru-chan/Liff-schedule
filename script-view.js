@@ -1,5 +1,5 @@
 // ▼▼▼ GASのURL（GET用） ▼▼▼
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxJrlczVOw6_WCOXfA0jpIFTUJwIsdA48QuAAFZXPCMnKK6UngPoF810JN78rew8MbeaQ/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzq1NVSSQT5sF5_CXopyiRG242OahII54QLh9SgGmyJrgQ-wEpFYJPfbP2DUlCfx7DYhQ/exec";
 let scheduleMap = {};
 let currentDate = new Date();
 
