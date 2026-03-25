@@ -54,7 +54,7 @@ function showSchedules(dateKey) {
         </div>
 
         <div class="card-right">
-          <button class="edit-circle-btn" onclick="alert('編集は準備中！')">
+          <button class="edit-circle-btn" onclick="editSchedule('${item.id}', '${item.category || ""}', '${item.memo || ""}', '${times.join(",")}', '${item.owner}', '${dateKey}')">
             <span style="font-size:16px;">✏️</span>
           </button>
           <button class="delete-circle-btn" onclick="deleteSchedule('${item.id}', '${dateKey}')">
@@ -177,3 +177,18 @@ document.getElementById("goToInput").addEventListener("click", () => {
   // index.html に移動する（同じフォルダにある場合）
   window.location.href = "index.html";
 });
+
+function editSchedule(id, category, memo, timesStr, owner, date) {
+  const params = new URLSearchParams({
+    edit: 'true',
+    id: id,
+    category: category,
+    memo: memo,
+    times: timesStr, // "10:00,11:00" みたいな文字列
+    owner: owner,
+    date: date      // 編集した後に元の日に戻れるように日付も送るよ
+  });
+  
+  // 登録画面（index.html）へジャンプ！
+  window.location.href = `index.html?${params.toString()}`;
+}
