@@ -183,3 +183,56 @@ finalSubmitBtn.addEventListener('click', async () => {
     console.error('GAS送信エラー:', err);
   }
 }); // ← 最後の閉じカッコ
+
+// ページが読み込まれたら実行
+window.addEventListener('DOMContentLoaded', () => {
+  // 1. URLのパラメータ（?以降のデータ）を取得
+  const params = new URLSearchParams(window.location.search);
+  
+  // 2. 「編集モード(edit=true)」かどうかチェック
+  if (params.get('edit') === 'true') {
+    console.log("編集モードで起動したよ！");
+
+    // 3. 各入力欄にデータをセット
+    // ※ id名（memo, category等）は、まいちゃんのHTMLのidに合わせてね！
+    if (params.get('memo')) {
+      document.getElementById('memo').value = params.get('memo');
+    }
+    
+    if (params.get('category')) {
+      document.getElementById('category').value = params.get('category');
+    }
+
+    if (params.get('date')) {
+      document.getElementById('date').value = params.get('date');
+    }
+
+    // 時間（times）の処理
+    // "10:00,11:00" みたいな文字列で届くから、分割してセット
+    const times = params.get('times') ? params.get('times').split(',') : [];
+    if (times.length > 0) {
+      // 最初の時間をセット（input type="time" の場合）
+      if (document.getElementById('startTime')) {
+        document.getElementById('startTime').value = times[0];
+      }
+      // 終わりの時間があればセット
+      if (times.length > 1 && document.getElementById('endTime')) {
+        document.getElementById('endTime').value = times[times.length - 1];
+      }
+    }
+
+    // 4. 「登録」ボタンの文字を「更新する」に変える
+    const submitBtn = document.querySelector('button[type="submit"]') || document.getElementById('submitBtn');
+    if (submitBtn) {
+      submitBtn.innerText = "予定を更新する";
+      submitBtn.style.backgroundColor = "#4CAF50"; // 更新時は色を変えると分かりやすい！
+    }
+
+    // 5. 重要：編集対象の「ID」を隠し要素として持っておく（あとでGASに送るため）
+    const hiddenId = document.createElement('input');
+    hiddenId.type = 'hidden';
+    hiddenId.id = 'editId';
+    hiddenId.value = params.get('id');
+    document.body.appendChild(hiddenId);
+  }
+});
